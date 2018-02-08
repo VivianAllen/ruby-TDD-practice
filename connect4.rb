@@ -21,6 +21,10 @@ class Connect4
     @grid
   end
 
+  def view_grid
+    @grid.each { |x| puts x.inspect }
+  end
+
   def fill_grid(col)
     return false if @grid[col].count(&:nil?).zero?
     # if grid column not full, add player token to first nil position
@@ -31,6 +35,31 @@ class Connect4
 
   def switch_player
     @player == 1 ? @player = 2 : @player = 1
+  end
+
+  def diagonalise(in_grid)
+    # get diagonals proc
+    get_diagonals = proc do |grid|
+      diagonals = []
+      grid.each_index do |start_i|
+        curr_diagonal = []
+        col_i = start_i
+        row_i = 0
+        while col_i < grid.length && row_i < grid[col_i].length
+          curr_diagonal.push(grid[col_i][row_i])
+          col_i += 1
+          row_i += 1
+        end
+        diagonals.push(curr_diagonal)
+      end
+      diagonals
+    end
+    # get all diagonals and concatenate
+    diags1 = get_diagonals.call(in_grid)
+    diags2 = get_diagonals.call(in_grid.transpose)
+    diags3 = get_diagonals.call(in_grid.reverse)
+    diags4 = get_diagonals.call(in_grid.reverse.transpose)
+    diags1.concat(diags2[1..-1]).concat(diags3).concat(diags4[1..-1])
   end
 
   def win_vert?
@@ -45,8 +74,14 @@ class Connect4
     end
   end
 
+  def win_diag?
+    diagonalise(@grid).any? do |col|
+      col.each.with_index.count { |x, i| !x.nil? && col[i + 1] == x } >= 3
+    end
+  end
+
   def check_win
-    [win_vert?, win_horz?].any?
+    [win_vert?, win_horz?, win_diag?].any?
   end
 
   def play(col)

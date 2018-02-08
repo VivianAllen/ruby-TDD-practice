@@ -85,7 +85,7 @@ class TestConnect4 < Test::Unit::TestCase
     @game.play(1)
     @game.play(3)
     assert_equal("Player 2 wins!", @game.play(1))
-    assert_equal("Game has finished!", @game.play(0))
+    assert_equal('Game has finished!', @game.play(0))
   end
 
   def test_win_horz_player1
@@ -96,7 +96,7 @@ class TestConnect4 < Test::Unit::TestCase
     @game.play(2)
     @game.play(2)
     assert_equal('Player 1 wins!', @game.play(3))
-    assert_equal("Game has finished!", @game.play(0))
+    assert_equal('Game has finished!', @game.play(0))
   end
 
   def test_win_horz_player2
@@ -110,7 +110,23 @@ class TestConnect4 < Test::Unit::TestCase
     @game.play(3)
     @game.play(2)
     assert_equal('Player 2 wins!', @game.play(3))
-    assert_equal("Game has finished!", @game.play(0))
+    assert_equal('Game has finished!', @game.play(0))
   end
+
+  def test_win_diag_player1
+    @game.play(0)
+    @game.play(1)
+    @game.play(1)
+    @game.play(2)
+    @game.play(2)
+    @game.play(3)
+    @game.play(2)
+    @game.play(3)
+    @game.play(4)
+    @game.play(3)
+    assert_equal('Player 1 wins!', @game.play(3))
+    assert_equal('Game has finished!', @game.play(0))
+  end
+
 
 end
