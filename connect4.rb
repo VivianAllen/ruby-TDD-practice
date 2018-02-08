@@ -29,28 +29,38 @@ class Connect4
     true
   end
 
+
+
   def switch_player
     @player == 1 ? @player = 2 : @player = 1
   end
 
   def win_vert?
     @grid.any? do |col|
-      col.each.with_index.count { |x, i| not x.nil? && col[i + 1] == x } >= 3
+      col.each.with_index.count { |x, i| !x.nil? && col[i + 1] == x } >= 3
     end
   end
 
   def win_horz?
-    @grid.any? do |col|
-      col.each.with_index.count { |x, i| not x.nil? && col[i + 1] == x } >= 3
+    @grid.transpose.any? do |col|
+      col.each.with_index.count { |x, i| !x.nil? && col[i + 1] == x } >= 3
     end
   end
 
+  def check_win
+    [win_vert?, win_horz?].any?
+  end
 
   def play(col)
     return 'Game has finished!' unless @game
-    if fill_grid(col)
+    if fill_grid(col) && !check_win
       play_msg = "Player #{@player} has a turn"
       switch_player
+    elsif check_win
+      play_msg = "Player #{@player} wins!"
+      @game = false
+    else
+      play_msg = 'Column full!'
     end
     play_msg
   end
