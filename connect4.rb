@@ -11,16 +11,47 @@ class Connect4
   # "Player n wins!"
   # moves attempted after game won return "Game has finished!"
 
-  def initalize
+  def initialize
     @grid = Array.new(7) { Array.new(6) } # game grid
     @player = 1 # player designation, starts with 1
+    @game = true # game state (true = being played, false = over)
+  end
+
+  def report_grid
+    @grid
   end
 
   def fill_grid(col)
     return false if @grid[col].count(&:nil?).zero?
     # if grid column not full, add player token to first nil position
-    i = grid[col].find_index(nil)
+    i = @grid[col].find_index(nil)
     @grid[col][i] = @player
     true
+  end
+
+  def switch_player
+    @player == 1 ? @player = 2 : @player = 1
+  end
+
+  def win_vert?
+    @grid.any? do |col|
+      col.each.with_index.count { |x, i| not x.nil? && col[i + 1] == x } >= 3
+    end
+  end
+
+  def win_horz?
+    @grid.any? do |col|
+      col.each.with_index.count { |x, i| not x.nil? && col[i + 1] == x } >= 3
+    end
+  end
+
+
+  def play(col)
+    return 'Game has finished!' unless @game
+    if fill_grid(col)
+      play_msg = "Player #{@player} has a turn"
+      switch_player
+    end
+    play_msg
   end
 end
