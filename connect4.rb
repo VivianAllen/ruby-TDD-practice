@@ -29,8 +29,6 @@ class Connect4
     true
   end
 
-
-
   def switch_player
     @player == 1 ? @player = 2 : @player = 1
   end

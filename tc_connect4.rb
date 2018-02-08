@@ -99,14 +99,17 @@ class TestConnect4 < Test::Unit::TestCase
     assert_equal("Game has finished!", @game.play(0))
   end
 
-  def test_win_horz_player1
+  def test_win_horz_player2
     @game.play(0)
     @game.play(0)
     @game.play(1)
     @game.play(1)
     @game.play(2)
     @game.play(2)
-    assert_equal('Player 1 wins!', @game.play(3))
+    @game.play(2)
+    @game.play(3)
+    @game.play(2)
+    assert_equal('Player 2 wins!', @game.play(3))
     assert_equal("Game has finished!", @game.play(0))
   end
 
