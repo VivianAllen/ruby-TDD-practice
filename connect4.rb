@@ -62,26 +62,14 @@ class Connect4
     diags1.concat(diags2[1..-1]).concat(diags3).concat(diags4[1..-1])
   end
 
-  def win_vert?
-    @grid.any? do |col|
-      col.chunk { |x| x }.map { |_, y| y.length }.any? { |x| x >= 4 }
-    end
-  end
-
-  def win_horz?
-    @grid.transpose.any? do |col|
-      col.chunk { |x| x }.map { |_, y| y.length }.any? { |x| x >= 4 }
-    end
-  end
-
-  def win_diag?
-    diagonalise(@grid).any? do |col|
+  def win?(grid)
+    grid.any? do |col|
       col.chunk { |x| x }.map { |_, y| y.length }.any? { |x| x >= 4 }
     end
   end
 
   def check_win
-    [win_vert?, win_horz?, win_diag?].any?
+    [win?(@grid), win?(@grid.transpose), win?(diagonalise(@grid))].any?
   end
 
   def play(col)
