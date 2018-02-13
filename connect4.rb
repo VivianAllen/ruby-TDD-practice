@@ -64,19 +64,19 @@ class Connect4
 
   def win_vert?
     @grid.any? do |col|
-      col.each.with_index.count { |x, i| !x.nil? && col[i + 1] == x } >= 3
+      col.chunk { |x| x }.map { |_, y| y.length }.any? { |x| x >= 4 }
     end
   end
 
   def win_horz?
     @grid.transpose.any? do |col|
-      col.each.with_index.count { |x, i| !x.nil? && col[i + 1] == x } >= 3
+      col.chunk { |x| x }.map { |_, y| y.length }.any? { |x| x >= 4 }
     end
   end
 
   def win_diag?
     diagonalise(@grid).any? do |col|
-      col.each.with_index.count { |x, i| !x.nil? && col[i + 1] == x } >= 3
+      col.chunk { |x| x }.map { |_, y| y.length }.any? { |x| x >= 4 }
     end
   end
 
